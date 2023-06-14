@@ -7,12 +7,15 @@ reserved={
    'ate' : 'ATE',
    'limit' : 'LIMIT',
    'intake': 'INTAKE',
-   '=' : 'ASIGN'
+   '=' : 'ASIGN',
+   'sum': 'SUM',
+   'day': 'DAY'
 }
 
 tokens = [
     'NUMBER', #gramos consumidos de x comida
-    'ID' #tipo de alimento
+    'ID', #tipo de alimento
+    'DATE'
     ]+list(reserved.values())
     
 t_KCAL = r'kcal'
@@ -20,6 +23,14 @@ t_ATE = r'ate'
 t_LIMIT = r'limit'
 t_INTAKE = r'intake'
 t_ASIGN = r'='
+t_SUM = r'sum'
+t_DAY = r'day'
+# Expresión regular para la fecha (yyyy-mm-dd)
+def t_DATE(t):
+    r'\d{4}-\d{2}-\d{2}'
+    #\d reconoce enteros
+    #{n}: numero de digitos
+    return t
 
 def t_NUMBER(t):
     r'[0-9]+' #como reconocer un numero: valores entre 0 y 9 repetidos 1 o mas veces
@@ -30,7 +41,7 @@ def t_ID(t):
     r'[a-zA-Z_]+' #reconcocer letras
     t.type = reserved.get(t.value,'ID') #asociar a un ID
     return t
-
+    
 t_ignore  = ' \t' #ignorar espacio o tabulacion
 
 #error de interpretacion
@@ -38,9 +49,6 @@ def t_error(t):
     print(f"Error léxico: Carácter no válido {t.value[0]}")
     t.lexer.skip(1) #no se cierra el programa si hay error
 
-#precedence=(('left', 'SU', 'RE'),) #***************************************************************
-
-variables={} #food_type: in grams intake
 calorias = {
     'verduras': {
         'ajo': 169,
@@ -176,8 +184,8 @@ def p_expresion(t):
               | ate_expr
               | average_intake
               | limit
+              | sum_day
     '''
-    #print(t[1])
     
 def p_expr_numero(t):
     'expresion : NUMBER'
@@ -190,7 +198,7 @@ def p_expr_id(t):
     for tipo, alimentos in calorias.items():
         if alimento in alimentos:
             t[0] = alimentos[alimento]
-            print(f"El alimento {alimento} tiene {alimentos[alimento]} kcal")
+            print(f"{alimento}: {alimentos[alimento]} kcal")
             return
     print(f"Alimento {alimento} no disponible")
     t[0] = 0
@@ -244,10 +252,9 @@ def p_kcal_expr(t):
             cal = alimentos[alimento]
             break
     if cal != -1:
-        print(f"El alimento {alimento} ({food}) tiene {cal} kcal")
+        print(f"{alimento} ({food}): {cal} kcal")
     else:
         print(f"No se encontraron calorías para el alimento {alimento}")
-
 
 #ej: kcal carne = 200
 def p_registro_consumo(t):
@@ -260,7 +267,6 @@ def p_registro_consumo(t):
         print(f"Registro de {alimento} exitoso")
     else:
         print(f"El alimento {alimento} ya existe")
-
 
 def p_average_intake(t):
     'average_intake : INTAKE'
@@ -275,10 +281,23 @@ def p_average_intake(t):
     else:
         print("No hay registros")
 
-
+from datetime import date
+def p_sum_day(t):
+    'sum_day : SUM DAY DATE'
+    fecha_str = t[3]
+    year, month, day = fecha_str.split('-')
+    fecha = date(int(year), int(month), int(day))
+    cal_total = 0
+    if fecha in intakes:
+        daily_intake = intakes[fecha]
+        for calorias in daily_intake.values():
+            cal_total += calorias
+        print(f"Calorias totales del día {fecha}: {cal_total} kcal")
+    else:
+        print(f"No hay registros del dia {fecha}");
+    
 def p_error(t):
     print("Error de sintaxis")
-
 
 lexer=lex.lex()
 parser=yacc.yacc()
