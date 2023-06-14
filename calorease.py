@@ -165,6 +165,7 @@ calorias = {
         'mantequilla': 752,
         'margarina': 752
     },
+    'otros': {}
 }
 #reglas gramaticales
 import datetime
@@ -225,14 +226,14 @@ def p_expr_ate(t):
                 intakes[fecha][alimento] = cal_total
             else:
                 intakes[fecha] = {alimento: cal_total}
+            print(f"Registro de consumo exitoso para el día {fecha}: {alimento} ({cal_total} kcal)")
             return
     print(f"Alimento {alimento} no disponible")
     t[0] = 0
     
 #ej: kcal pera
 def p_kcal_expr(t):
-    '''kcal_expr : KCAL ID 
-                | registro_consumo'''
+    'kcal_expr : KCAL ID '
     global calorias
     food = ""
     alimento = t[2]
@@ -250,13 +251,13 @@ def p_kcal_expr(t):
 
 #ej: kcal carne = 200
 def p_registro_consumo(t):
-    'registro_consumo : KCAL ID ASIGN NUMBER'
+    'kcal_expr : KCAL ID ASIGN NUMBER'
     alimento = t[2]
     cal = t[4]
     global calorias
     if alimento not in calorias['otros']:
         calorias['otros'][alimento] = cal
-        print("Registro de {alimento} exitoso")
+        print(f"Registro de {alimento} exitoso")
     else:
         print(f"El alimento {alimento} ya existe")
 
