@@ -174,17 +174,14 @@ def p_expresion(t):
     expresion : kcal_expr
               | ate_expr
               | average_intake
-              | registro_consumo
               | limit
     '''
-    print(t[1])
+    #print(t[1])
     
-# expresion -> n
 def p_expr_numero(t):
     'expresion : NUMBER'
     t[0]=t[1]
 
-# expresion -> id
 def p_expr_id(t):
     'expresion : ID'
     global calorias
@@ -211,53 +208,58 @@ def p_expr_ate(t):
     global calorias
     gramos = t[2]
     alimento = t[3]
+    fecha = datetime.date.today()
     for tipo, alimentos in calorias.items():
         if alimento in alimentos:
             cal_100g = alimentos[alimento] 
             cal_total = (cal_100g/100) * int(gramos)
             
-            suma_cal = sum(intakes.values())
+            suma_cal = sum(intakes.get(fecha, {}).values())
             if (suma_cal + cal_total) > limit:
-                print("Se ha superado el limite de calorías diarias {limite} kcal")
+                print(f"Se ha superado el limite de calorías diarias {limite} kcal")
                 t[0] = 0
                 return
             
             t[0] = cal_total
+            if fecha in intakes:
+                intakes[fecha][alimento] = cal_total
+            else:
+                intakes[fecha] = {alimento: cal_total}
             return
     print(f"Alimento {alimento} no disponible")
     t[0] = 0
     
-
+#ej: kcal pera
 def p_kcal_expr(t):
-    'kcal_expr : KCAL ID'
+    '''kcal_expr : KCAL ID 
+                | registro_consumo'''
     global calorias
+    food = ""
     alimento = t[2]
+    cal = -1
     for tipo, alimentos in calorias.items():
         if alimento in alimentos:
             food = tipo
             cal = alimentos[alimento]
             break
-    if cal != None:
+    if cal != -1:
         print(f"El alimento {alimento} ({food}) tiene {cal} kcal")
     else:
         print(f"No se encontraron calorías para el alimento {alimento}")
 
 
-#ej: tomate = 200
+#ej: kcal carne = 200
 def p_registro_consumo(t):
-    'registro_consumo : ID ASIGN NUMBER'
-    alimento = t[1]
-    cal = t[3]
-    for tipo, alimentos in calorias.items():
-        if alimento in alimentos:
-            alimentos[alimento] = cal
-            return
-    hoy = datetime.date.today()
-    if hoy in intakes:
-        intakes[hoy][alimento] = cal
+    'registro_consumo : KCAL ID ASIGN NUMBER'
+    alimento = t[2]
+    cal = t[4]
+    global calorias
+    if alimento not in calorias['otros']:
+        calorias['otros'][alimento] = cal
+        print("Registro de {alimento} exitoso")
     else:
-        intakes[hoy] = {alimento: cal}
-    print(f"{hoy} registrado")
+        print(f"El alimento {alimento} ya existe")
+
 
 def p_average_intake(t):
     'average_intake : INTAKE'
@@ -285,4 +287,3 @@ while True:
     except EOFError:
         break
     parser.parse(data)
-
