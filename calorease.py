@@ -50,9 +50,6 @@ def t_error(t):
     print(f"Error léxico: Carácter no válido {t.value[0]}")
     t.lexer.skip(1) #no se cierra el programa si hay error
 
-#precedence=(('left', 'SU', 'RE'),) #***************************************************************
-
-variables={} #food_type: in grams intake
 calorias = {
     'verduras': {
         'ajo': 169,
