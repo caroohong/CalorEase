@@ -216,7 +216,7 @@ def p_expr_ate(t):
             
             suma_cal = sum(intakes.get(fecha, {}).values())
             if (suma_cal + cal_total) > limit:
-                print(f"Se ha superado el limite de calorías diarias {limite} kcal")
+                print(f"Se ha superado el limite de calorías diarias {limit} kcal")
                 t[0] = 0
                 return
             
