@@ -190,9 +190,9 @@ def p_expresion(t):
               | ate_expr
               | average_intake
               | limit
+              | sum_day
               | food_with
     '''
-    #print(t[1])
     
 def p_expr_numero(t):
     'expresion : NUMBER'
@@ -205,7 +205,7 @@ def p_expr_id(t):
     for tipo, alimentos in calorias.items():
         if alimento in alimentos:
             t[0] = alimentos[alimento]
-            print(f"El alimento {alimento} tiene {alimentos[alimento]} kcal")
+            print(f"{alimento}: {alimentos[alimento]} kcal")
             return
     print(f"Alimento {alimento} no disponible")
     t[0] = 0
@@ -259,7 +259,7 @@ def p_kcal_expr(t):
             cal = alimentos[alimento]
             break
     if cal != -1:
-        print(f"El alimento {alimento} ({food}) tiene {cal} kcal")
+        print(f"{alimento} ({food}): {cal} kcal")
     else:
         print(f"No se encontraron calorías para el alimento {alimento}")
 
