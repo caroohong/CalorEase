@@ -9,7 +9,9 @@ reserved={
    'intake': 'INTAKE',
    '=' : 'ASIGN',
    'sum': 'SUM',
-   'day': 'DAY'
+   'day': 'DAY',
+   'food': 'FOOD',
+   'with': 'WITH'
 }
 
 tokens = [
@@ -25,6 +27,8 @@ t_INTAKE = r'intake'
 t_ASIGN = r'='
 t_SUM = r'sum'
 t_DAY = r'day'
+t_FOOD = r'food'
+t_WITH = r'with'
 
 # Expresión regular para la fecha (yyyy-mm-dd)
 def t_DATE(t):
@@ -103,7 +107,7 @@ calorias = {
         'lomo_cerdo': 208,
         'chorizo': 468,
         'gallina': 369,
-        'hamburgues': 230,
+        'hamburguesa': 230,
         'jamon': 380,
         'pollo': 134,
         'salami': 325,
@@ -145,7 +149,7 @@ calorias = {
         'harina_trigo': 340,
         'pan': 240 
     },
-    'legunmbres': {
+    'legumbres': {
         'garbanzos': 361,
         'lentejas': 336
     },
@@ -178,6 +182,7 @@ calorias = {
 }
 #reglas gramaticales
 import datetime
+from numpy import random
 intakes = {}
 def p_expresion(t):
     '''
@@ -185,6 +190,7 @@ def p_expresion(t):
               | ate_expr
               | average_intake
               | limit
+              | food_with
     '''
     #print(t[1])
     
@@ -298,6 +304,59 @@ def p_sum_day(t):
         print(f"Calorias totales del día {fecha}: {cal_total} kcal")
     else:
         print(f"No hay registros del dia {fecha}");
+
+# expression -> food with number 
+#ej: food with 400
+def p_expr_food_with(t):
+    'food_with : FOOD WITH NUMBER'
+    global calorias
+    comida = {}
+    cal_disp = float(t[3])
+    #Un plato promedio lo consideraremos que de las calorías totales 55% son de alguna proteina, 44% de algún cereal y 5% de alguna verdura
+    p = cal_disp*0.55
+    c = cal_disp*0.4
+    v = cal_disp*0.05
+
+    proteina = random.randint(0,4) #de carne si es igual a 0, de mar si es igual a 1, legumbres si es igual a 2 y huevo si es igual a 3
+    if proteina == 0:
+        d = calorias['carnes']
+        alimento = random.choice(list(d.keys()))
+        cal = d[alimento]
+        gramos = p*100/(cal)
+        comida[alimento] = gramos
+    elif proteina == 1:
+        d = calorias['productos del mar']
+        alimento = random.choice(list(d.keys()))
+        cal = d[alimento]
+        gramos = p*100/(cal)
+        comida[alimento] = gramos
+    elif proteina == 2:
+        d = calorias['legumbres']
+        alimento = random.choice(list(d.keys()))
+        cal = d[alimento]
+        gramos = p*100/(cal)
+        comida[alimento] = gramos
+    else:
+        d = calorias['huevos']
+        alimento = random.choice(list(d.keys()))
+        cal = d[alimento]
+        gramos = p*100/(cal)
+        comida[alimento] = gramos
+
+    cereal = random.choice(list(calorias['cereales'].keys()))
+    cal_c = calorias['cereales'][cereal]
+    gramos_c = c*100/(cal_c)
+    comida[cereal] = gramos_c
+
+    verdura = random.choice(list(calorias['verduras'].keys()))
+    cal_v = calorias['verduras'][verdura]
+    gramos_v = v*100/(cal_v)
+    comida[verdura] = gramos_v
+
+    print("La comida contiene los siguientes alimentos")
+    for alimento in comida:
+        print(f"{alimento} : {comida[alimento]} gramos")
+    print()
 
 def p_error(t):
     print("Error de sintaxis")
