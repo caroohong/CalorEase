@@ -7,12 +7,15 @@ reserved={
    'ate' : 'ATE',
    'limit' : 'LIMIT',
    'intake': 'INTAKE',
-   '=' : 'ASIGN'
+   '=' : 'ASIGN',
+   'sum': 'SUM',
+   'day': 'DAY'
 }
 
 tokens = [
     'NUMBER', #gramos consumidos de x comida
-    'ID' #tipo de alimento
+    'ID', #tipo de alimento
+    'DATE'
     ]+list(reserved.values())
     
 t_KCAL = r'kcal'
@@ -20,6 +23,15 @@ t_ATE = r'ate'
 t_LIMIT = r'limit'
 t_INTAKE = r'intake'
 t_ASIGN = r'='
+t_SUM = r'sum'
+t_DAY = r'day'
+
+# Expresión regular para la fecha (yyyy-mm-dd)
+def t_DATE(t):
+    r'\d{4}-\d{2}-\d{2}'
+    #\d reconoce enteros
+    #{n}: numero de digitos
+    return t
 
 def t_NUMBER(t):
     r'[0-9]+' #como reconocer un numero: valores entre 0 y 9 repetidos 1 o mas veces
@@ -275,6 +287,20 @@ def p_average_intake(t):
     else:
         print("No hay registros")
 
+from datetime import date
+def p_sum_day(t):
+    'sum_day : SUM DAY DATE'
+    fecha_str = t[3]
+    year, month, day = fecha_str.split('-')
+    fecha = date(int(year), int(month), int(day))
+    cal_total = 0
+    if fecha in intakes:
+        daily_intake = intakes[fecha]
+        for calorias in daily_intake.values():
+            cal_total += calorias
+        print(f"Calorias totales del día {fecha}: {cal_total} kcal")
+    else:
+        print(f"No hay registros del dia {fecha}");
 
 def p_error(t):
     print("Error de sintaxis")
