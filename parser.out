@@ -8,27 +8,32 @@ Rule 2     expresion -> ate_expr
 Rule 3     expresion -> average_intake
 Rule 4     expresion -> limit
 Rule 5     expresion -> sum_day
-Rule 6     expresion -> NUMBER
-Rule 7     expresion -> ID
-Rule 8     limit -> LIMIT NUMBER
-Rule 9     ate_expr -> ATE NUMBER ID
-Rule 10    kcal_expr -> KCAL ID
-Rule 11    kcal_expr -> KCAL ID ASIGN NUMBER
-Rule 12    average_intake -> INTAKE
-Rule 13    sum_day -> SUM DAY DATE
+Rule 6     expresion -> food_with
+Rule 7     expresion -> NUMBER
+Rule 8     expresion -> ID
+Rule 9     limit -> LIMIT NUMBER
+Rule 10    ate_expr -> ATE NUMBER ID
+Rule 11    kcal_expr -> KCAL ID
+Rule 12    kcal_expr -> KCAL ID ASIGN NUMBER
+Rule 13    average_intake -> AVERAGE INTAKE
+Rule 14    sum_day -> SUM DAY DATE
+Rule 15    food_with -> FOOD WITH NUMBER
 
 Terminals, with rules where they appear
 
-ASIGN                : 11
-ATE                  : 9
-DATE                 : 13
-DAY                  : 13
-ID                   : 7 9 10 11
-INTAKE               : 12
-KCAL                 : 10 11
-LIMIT                : 8
-NUMBER               : 6 8 9 11
-SUM                  : 13
+ASIGN                : 12
+ATE                  : 10
+AVERAGE              : 13
+DATE                 : 14
+DAY                  : 14
+FOOD                 : 15
+ID                   : 8 10 11 12
+INTAKE               : 13
+KCAL                 : 11 12
+LIMIT                : 9
+NUMBER               : 7 9 10 12 15
+SUM                  : 14
+WITH                 : 15
 error                : 
 
 Nonterminals, with rules where they appear
@@ -36,6 +41,7 @@ Nonterminals, with rules where they appear
 ate_expr             : 2
 average_intake       : 3
 expresion            : 0
+food_with            : 6
 kcal_expr            : 1
 limit                : 4
 sum_day              : 5
@@ -50,22 +56,25 @@ state 0
     (3) expresion -> . average_intake
     (4) expresion -> . limit
     (5) expresion -> . sum_day
-    (6) expresion -> . NUMBER
-    (7) expresion -> . ID
-    (10) kcal_expr -> . KCAL ID
-    (11) kcal_expr -> . KCAL ID ASIGN NUMBER
-    (9) ate_expr -> . ATE NUMBER ID
-    (12) average_intake -> . INTAKE
-    (8) limit -> . LIMIT NUMBER
-    (13) sum_day -> . SUM DAY DATE
+    (6) expresion -> . food_with
+    (7) expresion -> . NUMBER
+    (8) expresion -> . ID
+    (11) kcal_expr -> . KCAL ID
+    (12) kcal_expr -> . KCAL ID ASIGN NUMBER
+    (10) ate_expr -> . ATE NUMBER ID
+    (13) average_intake -> . AVERAGE INTAKE
+    (9) limit -> . LIMIT NUMBER
+    (14) sum_day -> . SUM DAY DATE
+    (15) food_with -> . FOOD WITH NUMBER
 
-    NUMBER          shift and go to state 7
-    ID              shift and go to state 8
-    KCAL            shift and go to state 9
-    ATE             shift and go to state 10
-    INTAKE          shift and go to state 11
-    LIMIT           shift and go to state 12
-    SUM             shift and go to state 13
+    NUMBER          shift and go to state 8
+    ID              shift and go to state 9
+    KCAL            shift and go to state 10
+    ATE             shift and go to state 11
+    AVERAGE         shift and go to state 12
+    LIMIT           shift and go to state 13
+    SUM             shift and go to state 14
+    FOOD            shift and go to state 15
 
     expresion                      shift and go to state 1
     kcal_expr                      shift and go to state 2
@@ -73,6 +82,7 @@ state 0
     average_intake                 shift and go to state 4
     limit                          shift and go to state 5
     sum_day                        shift and go to state 6
+    food_with                      shift and go to state 7
 
 state 1
 
@@ -117,108 +127,143 @@ state 6
 
 state 7
 
-    (6) expresion -> NUMBER .
+    (6) expresion -> food_with .
 
-    $end            reduce using rule 6 (expresion -> NUMBER .)
+    $end            reduce using rule 6 (expresion -> food_with .)
 
 
 state 8
 
-    (7) expresion -> ID .
+    (7) expresion -> NUMBER .
 
-    $end            reduce using rule 7 (expresion -> ID .)
+    $end            reduce using rule 7 (expresion -> NUMBER .)
 
 
 state 9
 
-    (10) kcal_expr -> KCAL . ID
-    (11) kcal_expr -> KCAL . ID ASIGN NUMBER
+    (8) expresion -> ID .
 
-    ID              shift and go to state 14
+    $end            reduce using rule 8 (expresion -> ID .)
 
 
 state 10
 
-    (9) ate_expr -> ATE . NUMBER ID
+    (11) kcal_expr -> KCAL . ID
+    (12) kcal_expr -> KCAL . ID ASIGN NUMBER
 
-    NUMBER          shift and go to state 15
+    ID              shift and go to state 16
 
 
 state 11
 
-    (12) average_intake -> INTAKE .
+    (10) ate_expr -> ATE . NUMBER ID
 
-    $end            reduce using rule 12 (average_intake -> INTAKE .)
+    NUMBER          shift and go to state 17
 
 
 state 12
 
-    (8) limit -> LIMIT . NUMBER
+    (13) average_intake -> AVERAGE . INTAKE
 
-    NUMBER          shift and go to state 16
+    INTAKE          shift and go to state 18
 
 
 state 13
 
-    (13) sum_day -> SUM . DAY DATE
+    (9) limit -> LIMIT . NUMBER
 
-    DAY             shift and go to state 17
+    NUMBER          shift and go to state 19
 
 
 state 14
 
-    (10) kcal_expr -> KCAL ID .
-    (11) kcal_expr -> KCAL ID . ASIGN NUMBER
+    (14) sum_day -> SUM . DAY DATE
 
-    $end            reduce using rule 10 (kcal_expr -> KCAL ID .)
-    ASIGN           shift and go to state 18
+    DAY             shift and go to state 20
 
 
 state 15
 
-    (9) ate_expr -> ATE NUMBER . ID
+    (15) food_with -> FOOD . WITH NUMBER
 
-    ID              shift and go to state 19
+    WITH            shift and go to state 21
 
 
 state 16
 
-    (8) limit -> LIMIT NUMBER .
+    (11) kcal_expr -> KCAL ID .
+    (12) kcal_expr -> KCAL ID . ASIGN NUMBER
 
-    $end            reduce using rule 8 (limit -> LIMIT NUMBER .)
+    $end            reduce using rule 11 (kcal_expr -> KCAL ID .)
+    ASIGN           shift and go to state 22
 
 
 state 17
 
-    (13) sum_day -> SUM DAY . DATE
+    (10) ate_expr -> ATE NUMBER . ID
 
-    DATE            shift and go to state 20
+    ID              shift and go to state 23
 
 
 state 18
 
-    (11) kcal_expr -> KCAL ID ASIGN . NUMBER
+    (13) average_intake -> AVERAGE INTAKE .
 
-    NUMBER          shift and go to state 21
+    $end            reduce using rule 13 (average_intake -> AVERAGE INTAKE .)
 
 
 state 19
 
-    (9) ate_expr -> ATE NUMBER ID .
+    (9) limit -> LIMIT NUMBER .
 
-    $end            reduce using rule 9 (ate_expr -> ATE NUMBER ID .)
+    $end            reduce using rule 9 (limit -> LIMIT NUMBER .)
 
 
 state 20
 
-    (13) sum_day -> SUM DAY DATE .
+    (14) sum_day -> SUM DAY . DATE
 
-    $end            reduce using rule 13 (sum_day -> SUM DAY DATE .)
+    DATE            shift and go to state 24
 
 
 state 21
 
-    (11) kcal_expr -> KCAL ID ASIGN NUMBER .
+    (15) food_with -> FOOD WITH . NUMBER
 
-    $end            reduce using rule 11 (kcal_expr -> KCAL ID ASIGN NUMBER .)
+    NUMBER          shift and go to state 25
+
+
+state 22
+
+    (12) kcal_expr -> KCAL ID ASIGN . NUMBER
+
+    NUMBER          shift and go to state 26
+
+
+state 23
+
+    (10) ate_expr -> ATE NUMBER ID .
+
+    $end            reduce using rule 10 (ate_expr -> ATE NUMBER ID .)
+
+
+state 24
+
+    (14) sum_day -> SUM DAY DATE .
+
+    $end            reduce using rule 14 (sum_day -> SUM DAY DATE .)
+
+
+state 25
+
+    (15) food_with -> FOOD WITH NUMBER .
+
+    $end            reduce using rule 15 (food_with -> FOOD WITH NUMBER .)
+
+
+state 26
+
+    (12) kcal_expr -> KCAL ID ASIGN NUMBER .
+
+    $end            reduce using rule 12 (kcal_expr -> KCAL ID ASIGN NUMBER .)
 
