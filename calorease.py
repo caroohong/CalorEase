@@ -323,35 +323,35 @@ def p_expr_food_with(t):
         alimento = random.choice(list(d.keys()))
         cal = d[alimento]
         gramos = p*100/(cal)
-        comida[alimento] = gramos
+        comida[alimento] = [gramos, p]
     elif proteina == 1:
         d = calorias['productos del mar']
         alimento = random.choice(list(d.keys()))
         cal = d[alimento]
         gramos = p*100/(cal)
-        comida[alimento] = gramos
+        comida[alimento] = [gramos, p]
     elif proteina == 2:
         d = calorias['legumbres']
         alimento = random.choice(list(d.keys()))
         cal = d[alimento]
         gramos = p*100/(cal)
-        comida[alimento] = gramos
+        comida[alimento] = [gramos, p]
     else:
         d = calorias['huevos']
         alimento = random.choice(list(d.keys()))
         cal = d[alimento]
         gramos = p*100/(cal)
-        comida[alimento] = gramos
+        comida[alimento] = [gramos, p]
 
     cereal = random.choice(list(calorias['cereales'].keys()))
     cal_c = calorias['cereales'][cereal]
     gramos_c = c*100/(cal_c)
-    comida[cereal] = gramos_c
+    comida[cereal] = [gramos_c, c]
 
     verdura = random.choice(list(calorias['verduras'].keys()))
     cal_v = calorias['verduras'][verdura]
     gramos_v = v*100/(cal_v)
-    comida[verdura] = gramos_v
+    comida[verdura] = [gramos_v, v]
 
     print("La comida contiene los siguientes alimentos")
     for alimento in comida:
