@@ -1,15 +1,33 @@
 # CalorEase
 ## Funciones
  Las palabras sin comillas son las palabras claves
- - kcal 'alimento': muestra las kcal de 100 gramos de un alimento.
- - 'alimento': muestra las kcal de 100 gramos de un alimento
- - ate 'num' 'alimento': simboliza ingerir 'num' gramos de 'alimento'
- - average intake: retorna el promedio de calorias ingeridas por día
- - limit 'num': se establece un numero de kcal diarias a 'num' kcal
- - 'num': muestra que alimento posee 'num' kcal
- - kcal 'alimento_personalizado' = 'num': el usuario puede ingresar las kcal de sus propios alimentos
- - sum day 'yyyy-mm-dd': retorna las calorias ingeridas en un dia ingresado por el usuario
- - food with 'num': muestra un plato con 'num' kcal con 55% proteinas, 40% carbohidratos y 5% verduras
+ 
+ kcal 'alimento' 
+ > muestra las kcal de 100 gramos de un alimento.
+ 
+ 'alimento'
+ > muestra las kcal de 100 gramos de un alimento
+ 
+ ate 'num' 'alimento'
+ > simboliza ingerir 'num' gramos de 'alimento'
+ 
+ average intake
+ > retorna el promedio de calorias ingeridas por día
+ 
+ limit 'num'
+ > se establece un numero de kcal diarias a 'num' kcal
+ 
+ 'num'
+ > muestra que alimento posee 'num' kcal
+ 
+ kcal 'alimento_personalizado' = 'num'
+ > el usuario puede ingresar las kcal de sus propios alimentos
+
+sum day 'yyyy-mm-dd'
+> retorna las calorias ingeridas en un dia ingresado por el usuario
+
+food with 'num'
+> muestra un plato con 'num' kcal con 55% proteinas, 40% carbohidratos y 5% verduras
 
 ## Ejemplos
  kcal pera
