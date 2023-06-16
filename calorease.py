@@ -1,3 +1,5 @@
+#Integrantes: Carolina Hong y Andrés Pirela
+
 # -*- coding: utf-8 -*-
 import ply.lex as lex
 import ply.yacc as yacc
