@@ -1,6 +1,6 @@
-#Integrantes: Carolina Hong y Andr√©s Pirela
-
 # -*- coding: utf-8 -*-
+#Integrantes: Carolina Hong y AndrÈs Pirela
+
 import ply.lex as lex
 import ply.yacc as yacc
 
@@ -34,7 +34,7 @@ t_DAY = r'day'
 t_FOOD = r'food'
 t_WITH = r'with'
 
-# Expresi√≥n regular para la fecha (yyyy-mm-dd)
+# ExpresiÛn regular para la fecha (yyyy-mm-dd)
 def t_DATE(t):
     r'\d{4}-\d{2}-\d{2}'
     #\d reconoce enteros
@@ -55,7 +55,7 @@ t_ignore  = ' \t' #ignorar espacio o tabulacion
 
 #error de interpretacion
 def t_error(t):
-    print(f"Error l√©xico: Car√°cter no v√°lido {t.value[0]}")
+    print(f"Error lexico: Car·cter no valido {t.value[0]}")
     t.lexer.skip(1) #no se cierra el programa si hay error
 
 calorias = {
@@ -235,7 +235,7 @@ def p_limit(t):
     global limit
     cal_max = t[2]
     limit = t[2]
-    print(f"L√≠mite de calor√≠as diarias establecido a {cal_max} kcal")
+    print(f"Li≠mite de calori≠as diarias establecido a {cal_max} kcal")
 
 # expresion -> ate number id
 #ej: ate 50 tomate, se interpreta como 50 gramos de tomate
@@ -252,8 +252,8 @@ def p_expr_ate(t):
             
             suma_cal = sum(intakes.get(fecha, {}).values())
             if (suma_cal + cal_total) > limit:
-                print(f"Se ha superado el limite de calor√≠as diarias {limit} kcal")
-                print(f"Quedan solo {limit - suma_cal} kcal disponibles")
+                print(f"Se ha superado el limite de calori≠as diarias {limit} kcal")
+                print(f"Quedan solo {round(limit - suma_cal,3)} kcal disponibles")
                 t[0] = 0
                 return
             
@@ -265,9 +265,9 @@ def p_expr_ate(t):
                     intakes[fecha][alimento] = cal_total
             else:
                 intakes[fecha] = {alimento: cal_total}
-            print(f"Registro de consumo exitoso para el d√≠a {fecha}: {alimento} ({round(cal_total, 3)} kcal)")
+            print(f"Registro de consumo exitoso para el dia {fecha}: {alimento} ({round(cal_total, 3)} kcal)")
             if limit != 1000000:
-                print(f"Quedan {limit - suma_cal - cal_total} kcal disponibles")
+                print(f"Quedan {round(limit - suma_cal - cal_total, 3)} kcal disponibles")
             return
     print(f"Alimento {alimento} no disponible")
     t[0] = 0
@@ -287,7 +287,7 @@ def p_kcal_expr(t):
     if cal != -1:
         print(f"{alimento} ({food}): {cal} kcal en 100 gramos")
     else:
-        print(f"No se encontraron calor√≠as para el alimento {alimento}")
+        print(f"No se encontraron calori≠as para el alimento {alimento}")
 
 
 #ej: kcal carne = 200
@@ -312,7 +312,7 @@ def p_average_intake(t):
         dias +=1
     if dias > 0:
         average = cal_total/dias
-        print(f"Promedio de calor√≠as diario: {average} kcal")
+        print(f"Promedio de calorÌ≠as diario: {average} kcal")
     else:
         print("No hay registros")
 
@@ -329,7 +329,7 @@ def p_sum_day(t):
         daily_intake = intakes[fecha]
         for calorias in daily_intake.values():
             cal_total += calorias
-        print(f"Calorias totales del d√≠a {fecha}: {round(cal_total, 3)} kcal")
+        print(f"Calorias totales del dia {fecha}: {round(cal_total, 3)} kcal")
     else:
         print(f"No hay registros del dia {fecha}");
 
@@ -340,7 +340,7 @@ def p_expr_food_with(t):
     global calorias
     comida = {}
     cal_disp = float(t[3])
-    #Un plato promedio lo consideraremos que de las calor√≠as totales 55% son de alguna proteina, 44% de alg√∫n cereal y 5% de alguna verdura
+    #Un plato promedio lo consideraremos que de las calori≠as totales 55% son de alguna proteina, 44% de algun cereal y 5% de alguna verdura
     p = cal_disp*0.55
     c = cal_disp*0.4
     v = cal_disp*0.05
@@ -381,7 +381,7 @@ def p_expr_food_with(t):
     gramos_v = v*100/(cal_v)
     comida[verdura] = [gramos_v, v]
 
-    print(f"A continuaci√≥n se muestra un ejemplo de un plato que tiene un total de {cal_disp} kcal")
+    print(f"A continuacion se muestra un ejemplo de un plato que tiene un total de {cal_disp} kcal")
     for alimento in comida:
         print(f"{alimento} : {round(comida[alimento][0], 3)} gramos ({round(comida[alimento][1], 3)} kcal)")
 
