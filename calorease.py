@@ -251,15 +251,21 @@ def p_expr_ate(t):
             suma_cal = sum(intakes.get(fecha, {}).values())
             if (suma_cal + cal_total) > limit:
                 print(f"Se ha superado el limite de calorías diarias {limit} kcal")
+                print(f"Quedan solo {limit - suma_cal} kcal disponibles")
                 t[0] = 0
                 return
             
             t[0] = cal_total
             if fecha in intakes:
-                intakes[fecha][alimento] = cal_total
+                if alimento in intakes[fecha].keys():
+                    intakes[fecha][alimento] += cal_total
+                else:
+                    intakes[fecha][alimento] = cal_total
             else:
                 intakes[fecha] = {alimento: cal_total}
             print(f"Registro de consumo exitoso para el día {fecha}: {alimento} ({round(cal_total, 3)} kcal)")
+            if limit != 1000000:
+                print(f"Quedan {limit - suma_cal - cal_total} kcal disponibles")
             return
     print(f"Alimento {alimento} no disponible")
     t[0] = 0
